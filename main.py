@@ -12,9 +12,10 @@ from topic_segmentor import TimeGapTopicSegmentor
 seg = TimeGapTopicSegmentor(max_gap_seconds=120)
 topics = seg.get_topics("raw_data/messages.json")
 
-print(len(topics))
+print(f"Obtained topics count: {len(topics)}")
+
+print("Topic messages:")
 for t in topics:
     for msg in t:
         print(f"{msg.user}: {msg.text}")
     print("\n\n")
-# print([len(t) for t in topics[:5]])
