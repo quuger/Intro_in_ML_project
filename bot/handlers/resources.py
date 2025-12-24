@@ -51,7 +51,7 @@ async def cmd_delete(message: Message):
 
 
 @router.callback_query(F.data.startswith("delete_"))
-async def process_delete(callback):
+async def process_delete(callback: types.CallbackQuery):
     filename = callback.data.split("_", 1)[1]
     
     if filename in utils.file_map:
@@ -62,9 +62,17 @@ async def process_delete(callback):
         
         del utils.file_map[filename]
         
-        await callback.message.answer(f"✅ Файл '{filename}' успешно удален.")
+        # Редактируем сообщение, чтобы убрать клавиатуру
+        await callback.message.edit_text(
+            f"✅ Файл '{filename}' успешно удален.",
+            reply_markup=None  # Убираем клавиатуру
+        )
     else:
-        await callback.message.answer("❌ Файл не найден.")
+        # Если файл уже не найден (например, был удален в другом месте)
+        await callback.message.edit_text(
+            "❌ Файл не найден или уже был удален.",
+            reply_markup=None  # Убираем клавиатуру
+        )
     
     await callback.answer()
 
