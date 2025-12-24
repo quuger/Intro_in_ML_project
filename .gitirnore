@@ -1,0 +1,16 @@
+venv/
+.env
+*/temp/
+
+
+bot/resources/*
+
+
+*/__pycache__/
+
+
+*.vscode/
+*.idea/
+
+
+*.log
