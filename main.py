@@ -7,14 +7,14 @@
 # json_input = "raw_data/telegram_prepared.json"
 # main(json_input)
 
-from topic_segmentor import TimeGapTopicSegmentor, export_topics_to_csv
+from topic_segmentor import TimeGapTopicSegmentor, export_topics_to_csv, ReplyChainTopicSegmentor
 
-seg = TimeGapTopicSegmentor(max_gap_seconds=120)
+seg = ReplyChainTopicSegmentor()
 topics = seg.get_topics("raw_data/messages.json")
 
 print(f"Obtained topics count: {len(topics)}")
 
-export_topics_to_csv("bebra.csv", topics)
+# export_topics_to_csv("bebra.csv", topics)
 
 print("Topic messages:")
 for t in topics:
