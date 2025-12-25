@@ -1,0 +1,5 @@
+{
+  "default": "./models/new_model.pt",
+  "sns_simple": "./models/sns_simple.pt",
+  "sns_k_means": "./models/sns_k_means.pt"
+}
