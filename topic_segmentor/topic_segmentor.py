@@ -17,6 +17,16 @@ Topic = List[ChatMessage]
 
 
 class TopicSegmentor(ABC):
+    __topic_size: int = 4
+
+    def __init__(self, topic_size: int):
+        if topic_size < 1:
+            raise ValueError("topic_size must be at least 1")
+        self.__topic_size = topic_size
+        
+    def get_topic_size(self) -> int:
+        return self.__topic_size
+
     @abstractmethod
     def get_topics(self, path: str) -> List[Topic]:
         raise NotImplementedError
