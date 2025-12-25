@@ -15,7 +15,7 @@ class TimeGapTopicSegmentor(TopicSegmentor):
     """
     __max_gap_seconds: int = 120
 
-    def __init__(self, topic_size, max_gap_seconds):
+    def __init__(self, max_gap_seconds, topic_size=4):
         super().__init__(topic_size)
         self.__max_gap_seconds = max_gap_seconds
 

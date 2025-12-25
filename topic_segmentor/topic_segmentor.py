@@ -17,7 +17,7 @@ Topic = List[ChatMessage]
 
 
 class TopicSegmentor(ABC):
-    __topic_size: int = 3
+    __topic_size: int = 4
 
     def __init__(self, topic_size: int):
         if topic_size < 1:
