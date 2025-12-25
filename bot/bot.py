@@ -4,28 +4,30 @@ from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters.command import Command
 from aiogram.fsm.storage.memory import MemoryStorage
 from config import config
-from handlers import base, other, resources
+from handlers import base, resources
 import atexit
-from utils.utils import load_file_map, save_file_map
+from utils.utils import load_all_maps, save_all_maps
+from utils.models_manager import chatbot_model
 
 TOKEN = config.bot_token.get_secret_value()
-atexit.register(save_file_map)
+atexit.register(save_all_maps)
 
 
 async def main():
-    load_file_map()
+    load_all_maps()
 
     logging.basicConfig(level=logging.INFO)
     bot = Bot(token=TOKEN)
     dp = Dispatcher()
-    dp.include_routers(base.router, other.router, resources.router)
+    dp.include_routers(base.router, resources.router)
     storage = MemoryStorage()
+    chatbot_model.load_model()
 
     await bot.delete_webhook(drop_pending_updates=True)
     try:
         await dp.start_polling(bot)
     finally:
-        save_file_map()
+        save_all_maps()
         await bot.session.close()
 
 

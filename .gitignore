@@ -16,6 +16,7 @@ venv/
 bot/resources/
 bot/temp/
 *.env
+*.pt
 
 # IDE
 .vscode/

@@ -11,3 +11,14 @@ class MentionFilter(BaseFilter):
         return (message.text and 
                 bot_username and 
                 f"@{bot_username}" in message.text)
+
+
+class ReplyToBotFilter(BaseFilter):
+    async def __call__(self, message: Message, bot: Bot) -> bool:
+        if not message.reply_to_message:
+            return False
+        
+        bot_info = await bot.get_me()
+        bot_id = bot_info.id
+        
+        return message.reply_to_message.from_user.id == bot_id
