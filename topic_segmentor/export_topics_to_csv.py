@@ -29,6 +29,6 @@ def export_topics_to_csv(filename: str, topics: List[Topic]):
             texts = [msg.text for msg in topic]
 
             response = texts[-1]
-            contexts = list(reversed(texts[:-1]))
+            contexts = list((texts[:-1]))
 
             writer.writerow(contexts + [response])
