@@ -1,4 +1,29 @@
-__pycache__
-.venv
-.ipynb_checkpoints
-raw_data/
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+.venv/
+
+# Project specific
+bot/resources/
+bot/temp/
+*.env
+*.pt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store  
+
+# Logs
+*.log

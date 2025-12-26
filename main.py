@@ -1,23 +1,14 @@
-# from topic_segmenter.Runner import main
-# import nltk
-# nltk.download('punkt_tab')
-# nltk.download('averaged_perceptron_tagger_eng')
-# nltk.download('universal_tagset')
+from topic_segmentor import HybridTimeGapMLTopicSegmentor, export_topics_to_csv
 
-# json_input = "raw_data/telegram_prepared.json"
-# main(json_input)
+seg = HybridTimeGapMLTopicSegmentor(
+    max_gap_seconds=300,
+    topic_size=4,
+    threshold=0.7,
+    tfidf_path="models/tfidf_feat.joblib",
+    model_path="models/gbdt_topic_window.joblib",
+)
 
-from topic_segmentor import TimeGapTopicSegmentor, export_topics_to_csv
-
-seg = TimeGapTopicSegmentor(max_gap_seconds=120)
 topics = seg.get_topics("raw_data/messages.json")
+print("Obtained topics:", len(topics))
 
-print(f"Obtained topics count: {len(topics)}")
-
-export_topics_to_csv("bebra.csv", topics)
-
-print("Topic messages:")
-for t in topics:
-    for msg in t:
-        print(f"{msg.user}: {msg.text}")
-    print("\n\n")
+export_topics_to_csv("hybrid_sns.csv", topics)
