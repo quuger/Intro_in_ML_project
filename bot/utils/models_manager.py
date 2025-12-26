@@ -62,7 +62,7 @@ class ChatBotModel:
             return "Модель не загружена. Пожалуйста, загрузите модель с помощью load_model()."
         
         try:
-            prompt = f"Контекст 1: {history[0].strip()}\nКонтекст 2: {history[1].strip()}\nАссистент:"
+            prompt = f"Контекст 1: {history[0].strip()}{"\nКонтекст 2: {history[1].strip()" if len(history) > 1 else ""}\nАссистент:"
 
             tokenized = self.tokenizer(
                 prompt, 

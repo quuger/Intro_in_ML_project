@@ -54,9 +54,12 @@ async def mention_handler(message: Message):
     print(f"GET_MSG: {message.text}")
     
     # Extract just the text without the mention if needed
-    user_text = message.text
+    history = [message.text]
 
-    history = [message.reply_to_message.text, user_text]
+    if message.reply_to_message:
+        history.append(message.reply_to_message.text)
+        hisotry = reversed(history)
+        print(history)
 
     # Generate response
     output = chatbot_model.generate_response(history)
