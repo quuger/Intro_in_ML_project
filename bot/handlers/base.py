@@ -51,15 +51,15 @@ async def cmd_help(message: Message):
 @router.message(filters.ReplyToBotFilter())
 @router.message(filters.MentionFilter())
 async def mention_handler(message: Message):
-    print(f"Reply to {message.text}")
+    print(f"GET_MSG: {message.text}")
     
     # Extract just the text without the mention if needed
     user_text = message.text
-    
+
+    history = [message.reply_to_message.text, user_text]
+
     # Generate response
-    output = chatbot_model.generate_response(user_text)
-    
-    print(f"try to send to user this one: {output}")
+    output = chatbot_model.generate_response(history)
     
     # Send response (truncate if too long for Telegram)
     if len(output) > 4000:

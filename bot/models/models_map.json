@@ -1,5 +1,7 @@
 {
-  "default": "./models/new_model.pt",
   "sns_simple": "./models/sns_simple.pt",
-  "sns_k_means": "./models/sns_k_means.pt"
+  "sns_k_means": "./models/sns_k_means.pt",
+  "sns_nltk": "./models/sns_nltk.pt",
+  "shift_nltk": "./models/shift_nltk.pt",
+  "sns_boost": "./models/sns_boost.pt"
 }

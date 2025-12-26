@@ -1,6 +1,7 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 import os
+import re
 from utils.utils import models_map
 from config import config
 
@@ -25,7 +26,7 @@ class ChatBotModel:
             print(f"Ошибка при загрузке токенизатора: {e}")
             raise
     
-    def load_model(self, name="default"):
+    def load_model(self, name=config.default_model):
         try:
             if name not in models_map:
                 print(f"Модель '{name}' не найдена в models_map")
@@ -54,17 +55,20 @@ class ChatBotModel:
             self.current_model_name = None
             return False
     
-    def generate_response(self, text, max_length=1000, temperature=0.9, 
+    def generate_response(self, history, max_length=1000, temperature=0.9, 
                          top_k=50, top_p=0.95, no_repeat_ngram_size=2,
                          repetition_penalty=1.1, min_length=10):
         if self.model is None:
             return "Модель не загружена. Пожалуйста, загрузите модель с помощью load_model()."
         
         try:
+            prompt = f"Контекст 1: {history[0].strip()}\nКонтекст 2: {history[1].strip()}\nАссистент:"
+
             tokenized = self.tokenizer(
-                text.strip(), 
+                prompt, 
                 return_tensors="pt",
-                truncation=True
+                truncation=True,
+                padding=True
             )
             
             # Генерация ответа
@@ -93,7 +97,8 @@ class ChatBotModel:
             )
             
             # Очистка ответа
-            response = self._clean_response(response, text)
+            # response = self._clean_response(response, text)
+            response = self._extract_assistant_response(response, prompt)
             
             return response.strip()
             
@@ -101,6 +106,25 @@ class ChatBotModel:
             print(f"Ошибка при генерации ответа: {e}")
             return ""
     
+    def _extract_assistant_response(self, full_response, prompt):
+        """Извлекает только ответ ассистента из полного текста"""
+        # Удаляем промпт из начала
+        if full_response.startswith(prompt):
+            response = full_response[len(prompt):]
+        else:
+            response = full_response
+        
+        # Удаляем лишние пробелы и переносы строк
+        response = response.strip()
+
+        print(f"SEND_MSG: {response}")
+
+        
+        # Удаляем все специальные токены
+        response = re.sub(r'<\|.*?\|>', '', response)
+        
+        return response
+
     def _clean_response(self, response, original_text=""):
         if original_text and response.startswith(original_text):
             response = response[len(original_text):]
